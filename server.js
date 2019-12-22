@@ -21,7 +21,24 @@ app.use(express.static('website'));
 
 // Setup Server
 const port=8080;
-const server = app.listen(port, listener());
+const server = app.listen(port, listener);
+
+// Callback to debug
 function listener() {
-    console.log('Server started on port ${port}');
+    console.log('Server started on localhost: ${port}');
 }
+
+// Initialize all route with a callback function
+app.get('/all', getAll);
+// Callback function to complete GET '/all'
+function getAll(res, req) {
+    req.send(projectData);
+}
+// Post Route
+app.post('/add', function (req, res) {
+    let data = req.body;
+    projectData['temperature'] = data.temperature;
+    projectData['date'] = data.date;
+    projectData['userResponse'] = data.userResponse;
+    res.send(data);
+});
